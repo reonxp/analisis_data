@@ -5,7 +5,7 @@ import seaborn as sns
 import numpy as np
 
 # Tentukan file path untuk dataset (sesuaikan dengan lokasi file yang ada di proyek Anda)
-file_path = '../data/data.csv'  # Gantilah dengan path yang sesuai
+file_path = 'data/data.csv'  # Gantilah dengan path yang sesuai
 
 # Membaca data dari file CSV
 data = pd.read_csv(file_path)
