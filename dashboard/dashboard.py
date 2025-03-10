@@ -10,9 +10,15 @@ data = pd.read_csv(file_path)
 data_clean = data.drop_duplicates()
 data_clean['datetime'] = pd.to_datetime(data_clean[['year', 'month', 'day', 'hour']])
 
+# Menambahkan kategori binning pada PM2.5
+bins = [0, 50, 100, 150, np.inf]
+labels = ['Rendah', 'Sedang', 'Tinggi', 'Sangat Tinggi']
+data_clean['PM2.5_Kategori'] = pd.cut(data_clean['PM2.5'], bins=bins, labels=labels)
+
+# Dashboard Title
 st.title('Dashboard Kualitas Udara dan Cuaca Aotizhongxin')
 
-analysis_option = st.sidebar.selectbox('Pilih Analisis', ['Distribusi Polusi Udara', 'Tren PM2.5 Seiring Waktu', 'Korelasi Cuaca dan PM2.5'])
+analysis_option = st.sidebar.selectbox('Pilih Analisis', ['Distribusi Polusi Udara', 'Tren PM2.5 Seiring Waktu', 'Korelasi Cuaca dan PM2.5', 'Distribusi PM2.5 Berdasarkan Kategori'])
 
 # Analisis 1: Distribusi Polusi Udara
 if analysis_option == 'Distribusi Polusi Udara':
@@ -53,4 +59,14 @@ elif analysis_option == 'Korelasi Cuaca dan PM2.5':
     fig, ax = plt.subplots(figsize=(8, 6))
     sns.heatmap(correlation_pm2_5_weather, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
     ax.set_title('Korelasi PM2.5 dengan Faktor Cuaca')
+    st.pyplot(fig)
+
+# Analisis 4: Distribusi PM2.5 Berdasarkan Kategori
+elif analysis_option == 'Distribusi PM2.5 Berdasarkan Kategori':
+    st.subheader('Distribusi PM2.5 berdasarkan Kategori')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.countplot(x='PM2.5_Kategori', data=data_clean, ax=ax, palette='coolwarm')
+    ax.set_title('Distribusi PM2.5 berdasarkan Kategori')
+    ax.set_xlabel('Kategori PM2.5')
+    ax.set_ylabel('Jumlah Data')
     st.pyplot(fig)
