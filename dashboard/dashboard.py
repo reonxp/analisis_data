@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-file_path = '../PRSA_Data_Aotizhongxin_20130301-20170228.csv'
+# Tentukan file path untuk dataset (sesuaikan dengan lokasi file yang ada di proyek Anda)
+file_path = '../data/data.csv'  # Gantilah dengan path yang sesuai
+
+# Membaca data dari file CSV
 data = pd.read_csv(file_path)
 
+# Data Cleaning: Menghapus duplikasi dan menambahkan kolom datetime
 data_clean = data.drop_duplicates()
 data_clean['datetime'] = pd.to_datetime(data_clean[['year', 'month', 'day', 'hour']])
 
@@ -18,6 +22,7 @@ data_clean['PM2.5_Kategori'] = pd.cut(data_clean['PM2.5'], bins=bins, labels=lab
 # Dashboard Title
 st.title('Dashboard Kualitas Udara dan Cuaca Aotizhongxin')
 
+# Sidebar untuk memilih analisis
 analysis_option = st.sidebar.selectbox('Pilih Analisis', ['Distribusi Polusi Udara', 'Tren PM2.5 Seiring Waktu', 'Korelasi Cuaca dan PM2.5', 'Distribusi PM2.5 Berdasarkan Kategori'])
 
 # Analisis 1: Distribusi Polusi Udara
@@ -25,14 +30,14 @@ if analysis_option == 'Distribusi Polusi Udara':
     st.subheader('Distribusi PM2.5 dan PM10')
     col1, col2 = st.columns(2)
 
-    # PM2.5 Distribution
+    # Distribusi PM2.5
     with col1:
         st.write("Distribusi PM2.5")
         fig, ax = plt.subplots()
         sns.histplot(data_clean['PM2.5'], kde=True, color='skyblue', ax=ax)
         st.pyplot(fig)
 
-    # PM10 Distribution
+    # Distribusi PM10
     with col2:
         st.write("Distribusi PM10")
         fig, ax = plt.subplots()
