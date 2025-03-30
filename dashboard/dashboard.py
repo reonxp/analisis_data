@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-file_path = '../data/data.csv'
+file_path = '/data/data.csv'
 data = pd.read_csv(file_path)
 
 data_clean = data.drop_duplicates()
